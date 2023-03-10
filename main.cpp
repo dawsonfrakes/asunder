@@ -65,16 +65,18 @@ struct WindowWin32 {
     }
 };
 
+namespace GL {
 #define GL_FUNCTIONS \
     GL_FUNCTION(void, ClipControl, GLenum origin, GLenum depth)
 
-namespace GL {
     constexpr auto COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT;
     constexpr auto UPPER_LEFT = 0x8CA2;
     constexpr auto ZERO_TO_ONE = 0x935F;
 
     const auto ClearColor = glClearColor;
     const auto Clear = glClear;
+    // const auto Viewport = glViewport;
+
 #define GL_FUNCTION(RET, NAME, ...) RET (*NAME)(__VA_ARGS__);
     GL_FUNCTIONS
 #undef GL_FUNCTION
@@ -120,8 +122,7 @@ struct OpenGLWin32 {
         if (const auto wglSwapIntervalEXT = (BOOL (*)(int)) wglGetProcAddress("wglSwapIntervalEXT"))
             wglSwapIntervalEXT(0);
 
-#define GL_FUNCTION(RET, NAME, ...) \
-    GL::NAME = (RET(*)(__VA_ARGS__))wglGetProcAddress("gl" #NAME);
+#define GL_FUNCTION(RET, NAME, ...) GL::NAME = (RET(*)(__VA_ARGS__))wglGetProcAddress("gl" #NAME);
         GL_FUNCTIONS
 #undef GL_FUNCTION
 
