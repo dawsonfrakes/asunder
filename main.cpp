@@ -39,7 +39,10 @@ namespace GL {
 #include "xlib.cpp"
 #endif
 
+#include "game.hpp"
+
 int main() {
+    init();
     PlatformWindow window;
     PlatformOpenGL renderer(window);
     GL::ClipControl(GL::UPPER_LEFT, GL::ZERO_TO_ONE);

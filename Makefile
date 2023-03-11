@@ -1,25 +1,28 @@
-SRC = main.cpp
-# Windows
-# LDFLAGS = -lgdi32 -lopengl32
+# make => build dynamic gamemode loader (think Garry's Mod)
+# make game GAME=./game.cpp => (re)build dynamic gamemode
+# or
+# make GAME=./game.cpp => build static engine+gamemode
 
-# Linux (xlib)
-LDFLAGS = -lX11 -lGL
+# LDFLAGS = -lgdi32 -lopengl32 # Windows
+LDFLAGS = -lX11 -lGL # Linux
 
-OBJ = $(SRC:.cpp=.o)
-TARGET = game
 CXX = clang++
-CFLAGS = -std=c++11 -Wall -Wextra -pedantic -g
+CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic -g
+ifeq ($(origin GAME), undefined)
+GAME = game_dynamic.cpp
+# LDFLAGS += ??? # Windows
+LDFLAGS += -ldl
+DYNAMIC = true
+endif
 
-$(TARGET): $(OBJ)
-	$(CXX) $(OBJ) -o $(TARGET) $(LDFLAGS)
+all:
+	$(CXX) $(CXXFLAGS) main.cpp $(GAME) -o game $(LDFLAGS)
 
-$(OBJ): win32.cpp xlib.cpp
+game:
+ifneq ($(DYNAMIC), true)
+	$(CXX) -shared -fpic $(CXXFLAGS) $(GAME) -o game.so
+else
+	@echo 'Error! usage: make $@ GAME=./path/to/game.cpp'
+endif
 
-.cpp.o:
-	$(CXX) -c $(CFLAGS) $<
-
-clean:
-	rm -f $(OBJ) $(TARGET)
-
-run: $(TARGET)
-	./$(TARGET)
+.PHONY: all game
