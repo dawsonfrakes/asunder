@@ -1,5 +1,4 @@
 #include <X11/Xlib.h>
-#include <GL/glx.h>
 #include <stdio.h>
 
 struct PlatformWindow {
@@ -50,6 +49,9 @@ struct PlatformWindow {
     }
 };
 
+#include <GL/glx.h>
+#include "opengl.hpp"
+
 struct PlatformOpenGL {
     GLXContext context;
     const PlatformWindow &w;
@@ -84,7 +86,7 @@ struct PlatformOpenGL {
         const auto glXCreateContextAttribsARB = (GLXContext (*)(Display *, GLXFBConfig, GLXContext, Bool, const int *)) glXGetProcAddress((const GLubyte *) "glXCreateContextAttribsARB");
         context = glXCreateContextAttribsARB(window.dpy, fbc, nullptr, True, context_attribs);
         glXMakeCurrent(window.dpy, window.win, context);
-#define GL_FUNCTION(RET, NAME, ...) GL::NAME = (RET (*)(__VA_ARGS__)) glXGetProcAddress((const GLubyte *) ("gl" #NAME));
+#define GL_FUNCTION(RET, NAME, ...) OpenGL::NAME = (RET (*)(__VA_ARGS__)) glXGetProcAddress((const GLubyte *) ("gl" #NAME));
         GL_FUNCTIONS
 #undef GL_FUNCTION
     }

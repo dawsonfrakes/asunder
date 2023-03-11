@@ -1,6 +1,5 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <GL/gl.h>
 
 struct PlatformWindow {
     HINSTANCE inst;
@@ -49,6 +48,8 @@ struct PlatformWindow {
     }
 };
 
+#include "opengl.hpp"
+
 struct PlatformOpenGL {
     HGLRC context;
     const HDC &hdc;
@@ -90,7 +91,7 @@ struct PlatformOpenGL {
             wglSwapIntervalEXT(0);
 
         const auto opengl32 = GetModuleHandleA("opengl32");
-#define GL_FUNCTION(RET, NAME, ...) if (!(GL::NAME = (RET (*)(__VA_ARGS__))wglGetProcAddress("gl" #NAME))) GL::NAME = (RET (*)(__VA_ARGS__)) GetProcAddress(opengl32, "gl" #NAME);
+#define GL_FUNCTION(RET, NAME, ...) if (!(OpenGL::NAME = (RET (*)(__VA_ARGS__))wglGetProcAddress("gl" #NAME))) OpenGL::NAME = (RET (*)(__VA_ARGS__)) GetProcAddress(opengl32, "gl" #NAME);
         GL_FUNCTIONS
 #undef GL_FUNCTION
     }
