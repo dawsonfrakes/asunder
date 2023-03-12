@@ -1,17 +1,13 @@
 #include "globals.hpp"
 
-#if defined(_WIN32)
-#include "win32.cpp"
-#elif defined(__linux__)
-#include "xlib.cpp"
-#endif
-
+#include "Window.cpp"
+#include "Renderer.cpp"
 #include "game.hpp"
 
 auto main() -> int {
     init();
-    PlatformWindow window;
-    PlatformOpenGL renderer(window);
+    Ugly::Window window;
+    Ugly::Renderer renderer(window);
     OpenGL::ClipControl(OpenGL::UPPER_LEFT, OpenGL::ZERO_TO_ONE);
     OpenGL::DepthRange(1.0, 0.0);
     while (true) {

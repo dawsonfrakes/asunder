@@ -7,7 +7,7 @@
 LDFLAGS = -lX11 -lGL # Linux
 
 CXX = clang++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic -g
+CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic -g -DUSE_XLIB -DUSE_OPENGL
 ifeq ($(origin GAME), undefined)
 GAME = game_dynamic.cpp
 # LDFLAGS += ??? # Windows
