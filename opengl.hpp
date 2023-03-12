@@ -4,13 +4,11 @@ namespace OpenGL {
 #define GL_FUNCTIONS \
     GL_FUNCTION(void, ClipControl, GLenum origin, GLenum depth) \
     GL_FUNCTION(void, Clear, GLbitfield mask) \
-    GL_FUNCTION(void, ClearColor, GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
-
-    /*typedef u32 GLenum;
-    typedef u32 GLbitfield;
-    typedef f32 GLclampf;*/
+    GL_FUNCTION(void, ClearColor, GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha) \
+    GL_FUNCTION(void, DepthRange, GLdouble nearVal, GLdouble farVal)
 
     constexpr auto COLOR_BUFFER_BIT = 0x00004000;
+    constexpr auto LOWER_LEFT = 0x8CA1;
     constexpr auto UPPER_LEFT = 0x8CA2;
     constexpr auto ZERO_TO_ONE = 0x935F;
 
